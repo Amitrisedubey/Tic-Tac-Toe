@@ -3,7 +3,19 @@ import { Square } from "./Square";
 
 export const Board = () => {
   const [state, setState] = useState(Array(9).fill(null));
-  const [isXTurn, setIsXTurn] = useState(true);
+  console.log(state);
+  const [isXTurn, setisXTurn] = useState(true);
+  const handleClick = (index) => {
+    console.log(index);
+    if (state[index] !== null) {
+      return;
+    }
+    const turnState = [...state];
+    turnState[index] = isXTurn ? "X" : "0";
+    setState(turnState);
+    setisXTurn(!isXTurn);
+  };
+
   const checkWinner = () => {
     const winnerLogic = [
       [0, 1, 2],
@@ -24,26 +36,34 @@ export const Board = () => {
     return false;
   };
   const isWinner = checkWinner();
-  console.log(state);
-  const handleClick = (index) => {
-    if (state[index] !== null) {
-      return;
-    }
-    const newStates = [...state];
-    newStates[index] = isXTurn ? "X" : "0";
-    setState(newStates);
-    setIsXTurn(!isXTurn);
-  };
-  const handleReset = () => {
-    setState(Array(9).fill(null));
-  };
   return isWinner ? (
-    <div>
-      {isWinner} Won the game <button onClick={handleReset}>Play Again</button>
+    <div style={{ textAlign: "center", marginTop: "65px" }}>
+      <h1>{isWinner} won the game</h1>
+      <button
+        style={{
+          border: "none",
+          backgroundColor: "blue",
+          color: "white",
+          height: "45px",
+          borderRadius: "8px",
+        }}
+        onClick={() => setState(Array(9).fill(null))}
+      >
+        Play Again
+      </button>
     </div>
   ) : (
     <div className="board-container">
-      <h4>Player {isXTurn ? "X" : "0"} Please Move</h4>
+      <h1 style={{ textAlign: "center", color: "#FFE7A0" }}>Tic Tac Toe</h1>
+      <h4
+        style={{
+          color: "#FFE7A0",
+          fontWeight: "bold",
+          fontSize: "15px",
+        }}
+      >
+        Player {isXTurn ? "X" : "0"} please move
+      </h4>
       <div className="board-row">
         <Square onClick={() => handleClick(0)} value={state[0]} />
         <Square onClick={() => handleClick(1)} value={state[1]} />
